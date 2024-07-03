@@ -1,4 +1,4 @@
-import { Enrollment}  from "../models/enrollment.model.js";   // credits: course.credits,
+import { Enrollment}  from "../models/enrollment.model.js";  
 import { Courses } from "../models/course.model.js";
 import { Student } from "../models/student.model.js";
 

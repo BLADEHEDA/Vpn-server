@@ -23,15 +23,14 @@ const studentSchema = new mongoose.Schema({
         type: String,
         required: true,
         unique: true
-
     },
     image: {
         type: String,
-        required: false,   
-        unique: true     
-    },  
+        required: false,
+        unique: true
+    },
     enrollments: [{
-        type: mongoose.Schema.Types.ObjectId,     
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'Enrollment'
     }],
 }, { timestamps: true });

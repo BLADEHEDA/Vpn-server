@@ -34,6 +34,7 @@ export const getAllLecturerCOurse = async (req, res) => {
                         department: course.department,
                         has_prerequisite: course.has_prerequisite
                     },
+                    academicYear: enrollment.academicYear,
                 };
             } catch (error) {
                 console.error('Error fetching related data:', error);
@@ -52,14 +53,20 @@ export const getAllLecturerCOurse = async (req, res) => {
 
 
 export const addnewlecturerCourse = async (req, res) => {
-    const { lecturerId, courseId } = req.body;
+    const { lecturerId, courseId,academicYear} = req.body;
+
+        // Check if the combination already exists
+        const existingCourse = await LecturerCourse.findOne({ lecturerId, courseId, academicYear });
+        if (existingCourse) {
+            return res.status(400).json({ message: 'This lecturer has already been assigned to this course for the specified academic year' });
+        }
 
     if (!mongoose.Types.ObjectId.isValid(lecturerId) || !mongoose.Types.ObjectId.isValid(courseId)) {
         return res.status(400).json({ message: 'Invalid lecturerId or courseId' });
     }
 
     try {
-        const lecturerCourse = new LecturerCourse({ lecturerId, courseId });
+        const lecturerCourse = new LecturerCourse({ lecturerId, courseId,academicYear, });
 
         const lecturer = await Signup.findById(lecturerId)
         const course = await Courses.findById(courseId)
@@ -105,6 +112,7 @@ export const getAllSpecificLecturerCourse = async (req, res) => {
         // Construct the response object
         const specificEnrollment = {
             _id: enrollment._id,
+            academicYear: enrollment.academicYear,
             lecturer: {
                 id: lecturer._id,
                 firstName: lecturer.firstName,

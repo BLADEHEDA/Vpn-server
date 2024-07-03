@@ -9,12 +9,12 @@ const signupSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    matricule: {
-        type: String,
-        unique: true,
-        sparse: true
-    },
     email: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    phone_number: {
         type: String,
         required: true,
         unique: true

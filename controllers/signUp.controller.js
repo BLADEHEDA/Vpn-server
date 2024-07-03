@@ -3,7 +3,7 @@ import bcrypt from 'bcrypt';
 
 export const signupUser = async (req, res) => {
     try {
-        const { firstName, lastName, email, password,role} = req.body;
+        const { firstName, lastName, email, password,role,phone_number} = req.body;
         // Check if the email is already registered
         const existingUser = await Signup.findOne({ email });
         if (existingUser) {
@@ -18,6 +18,7 @@ export const signupUser = async (req, res) => {
             firstName,
             lastName,
             email,
+            phone_number,
             password: hashedPassword,
             role
         });
@@ -51,4 +52,33 @@ export const getSpecificSignUpUser = async(req,res) =>{
         res.status(500).json({error: error.message})
     }
 }
+export const deteteSpecificSignUpUser = async(req,res)=>{
+    const {id} = req.params
+    try{
+        const lecturer = await Signup.findByIdAndDelete(id,req.body)
+        console.log('The lecturer is',lecturer);
+        if(!lecturer){
+           return res.status(404).json(`Cannot find user with id ${id} in the database`)  
+        }
+        res.status(200).json(lecturer)
+    }
+    catch(error){
+        res.status(500).json({message:error.message})
+    }
+}
+
+export const editSignUpUser =async(req,res)=>{
+    const { id } = req.params
+    try{
+        const lecturer = await Signup.findByIdAndUpdate(id,req.body)
+        if(!lecturer){
+           return res.status(400).json(`Cannot find user with id ${id} in the database`)  
+        }
+        res.status(200).json(lecturer)
+    }
+    catch(error){
+        res.status(500).json({message:error.message})
+    }
+}
+
 

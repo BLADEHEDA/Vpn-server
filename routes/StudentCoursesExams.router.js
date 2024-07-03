@@ -1,9 +1,9 @@
 import express from 'express';
-import {getAllstudentCourseExam,getSpicificExamination,addExamination } from '../controllers/StudentCoursesExams.controller.js'
+import {getAllStudentCourseExam,getSpicificExamination,addExamination } from '../controllers/StudentCoursesExams.controller.js'
 
 const router = express.Router();
 
-router.get('/',getAllstudentCourseExam)
+router.get('/',getAllStudentCourseExam)
 router.get('/:id',getSpicificExamination) 
 router.post('/',addExamination)
 
