@@ -10,16 +10,19 @@ export const getAllCourses = async (req, res) => {
     }
 }
 
+
 export const addCourses = async (req, res) => {
     try {
-        const course = await Courses.create(req.body)
-        res.status(200).json(course)
-
+        // Check if the request body is an array
+        const courses = Array.isArray(req.body) ? req.body : [req.body];
+        const addedCourses = await Courses.insertMany(courses);
+        res.status(200).json(addedCourses);
     }
     catch (error) {
         res.status(500).json({ message: error.message })
     }
 }
+
 
 export const getSpecificCourse = async (req, res) => {
     try {

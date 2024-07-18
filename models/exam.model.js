@@ -6,6 +6,10 @@ const examSchema = new mongoose.Schema({
         enum: ['first_semester', 'second_semester', 'resit_semester'],
         required: true
     },
+    academicYear: {
+        type: String,
+        required: true
+    }
 },
  { timestamps: true } 
 )

@@ -20,6 +20,11 @@ export const getAllStudentCourseExam = async (req, res) => {
             if (!course) {
                 throw new Error(`COurse with id ${studentCourseExam.course} not found`);
             }
+            const exam = await Exam.findById(studentCourseExam.exam);
+            if (!exam) {
+                throw new Error(`Exam with id ${studentCourseExam.exam} not found`);
+            }
+
             const modifiedObject = {
                 _id: studentCourseExam._id,
                 student: {
@@ -35,11 +40,10 @@ export const getAllStudentCourseExam = async (req, res) => {
                     courseName: course.courseName
                 },
                 exam: studentCourseExam.exam,
+                semester: exam.semester,
+                academicYear: exam.academicYear,
                 caMark: studentCourseExam.caMark,
                 examMark: studentCourseExam.examMark,
-                createdAt: studentCourseExam.createdAt,
-                updatedAt: studentCourseExam.updatedAt,
-                __v: studentCourseExam.__v
             };
             modifiedResponse.push(modifiedObject);
         }
@@ -70,6 +74,10 @@ export const getSpicificExamination = async (req, res) => {
         if (!course) {
             throw new Error(`COurse with id ${studentCourseExam.course} not found`);
         }
+        const exam = await Exam.findById(studentCourseExam.exam);
+        if (!exam) {
+            throw new Error(`Exam with id ${studentCourseExam.exam} not found`);
+        }
 
         const modifiedObject = {
             _id: studentCourseExam._id,
@@ -86,11 +94,10 @@ export const getSpicificExamination = async (req, res) => {
                 courseName: course.courseName
             },
             exam: studentCourseExam.exam,
+            semester: exam.semester,
+            academicYear: exam.academicYear,
             caMark: studentCourseExam.caMark,
             examMark: studentCourseExam.examMark,
-            createdAt: studentCourseExam.createdAt,
-            updatedAt: studentCourseExam.updatedAt,
-            __v: studentCourseExam.__v
         };
         res.status(200).json(modifiedObject);
     }
@@ -126,6 +133,8 @@ export const addExamination = async (req, res) => {
             student: student._id,
             course: course._id,
             exam: exam._id,
+            semester: exam.semester,
+            academicYear: exam.academicYear,
             caMark,
             examMark
         });
