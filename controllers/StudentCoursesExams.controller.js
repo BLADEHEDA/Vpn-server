@@ -3,6 +3,7 @@ import { Student } from "../models/student.model.js";
 import { Exam } from "../models/exam.model.js";
 import { Courses } from "../models/course.model.js";
 
+
 export const getAllStudentCourseExam = async (req, res) => {
     try {
         const studentCoursesExams = await StudentCoursesExams.find({});
@@ -14,15 +15,18 @@ export const getAllStudentCourseExam = async (req, res) => {
 
             const student = await Student.findById(studentCourseExam.student);
             if (!student) {
-                throw new Error(`Student with id ${studentCourseExam.student} not found`);
+                console.warn(`Student with id ${studentCourseExam.student} not found, skipping`);
+                continue; 
             }
             const course = await Courses.findById(studentCourseExam.course);
             if (!course) {
-                throw new Error(`COurse with id ${studentCourseExam.course} not found`);
+                console.warn(`Course with id ${studentCourseExam.course} not found, skipping`);
+                continue; 
             }
             const exam = await Exam.findById(studentCourseExam.exam);
             if (!exam) {
-                throw new Error(`Exam with id ${studentCourseExam.exam} not found`);
+                console.warn(`Exam with id ${studentCourseExam.exam} not found, skipping`);
+                continue; 
             }
 
             const modifiedObject = {
@@ -39,9 +43,11 @@ export const getAllStudentCourseExam = async (req, res) => {
                     courseCode: course.courseCode,
                     courseName: course.courseName
                 },
-                exam: studentCourseExam.exam,
-                semester: exam.semester,
-                academicYear: exam.academicYear,
+                exam: {
+                    _id: exam._id,
+                    semester: exam.semester,
+                    academicYear: exam.academicYear
+                },
                 caMark: studentCourseExam.caMark,
                 examMark: studentCourseExam.examMark,
             };
